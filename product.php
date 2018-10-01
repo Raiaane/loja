@@ -511,6 +511,8 @@
 					</div>
 				</div>
 
+
+
 				<div class="col-sm-6 col-md-8 col-lg-9 p-b-50">
 					<!--  -->
 					<div class="flex-sb-m flex-w p-b-35">
@@ -538,6 +540,7 @@
 								</form> 
 							</div>
 						</div>
+						
 
 						<span class="s-text8 p-t-5 p-b-5">
 							Showing 1–12 of 16 results
@@ -552,7 +555,20 @@
 							$erroBranco = "DELETE FROM produtos WHERE produto = '';";
 							mysqli_query($conexao, $erroBranco);
 
-							$sqlSelectP = "SELECT * FROM p_loja.produtos";
+							//acão para ir para outra pagina
+							$pagina = isset($_GET['pagination'])?$_GET['pagination']:1;
+							$registro = 6;
+							$SQLT= "SELECT * FROM produtos";
+							$queryT = mysqli_query($conexao , $SQLT);
+							$total = mysqli_num_rows($queryT);
+							$numpaginas = ceil($total/$registro);
+							$inicio = $pagina - 1;
+							$inicio = ($inicio*$numpaginas);
+
+
+							//seleção e mostra dos produtos para pagina
+
+							$sqlSelectP = "SELECT * FROM p_loja.produtos LIMIT $inicio, $registro";
 							$querySelectP = mysqli_query($conexao, $sqlSelectP);
 
 							while ($registrosProdutos = mysqli_fetch_assoc($querySelectP)){
@@ -564,9 +580,9 @@
 
 									<div class='col-sm-12 col-md-6 col-lg-4 p-b-50'>
 										<!-- Block2 -->
-										<div class='block2'>
-											<div class='block2-img wrap-pic-w of-hidden pos-relative'>
-												<img src='admin/img/".$img['imagem']."' alt='IMG-PRODUCT'>
+										<div class='block2' >
+											<div class='block2-img wrap-pic-w of-hidden pos-relative' style = 'width: 300px; height: 400px; padding: 10px; margin-bottom:45px;'>
+												<img src='admin/img/".$img['imagem']."' alt='IMG-PRODUCT'style = 'width: 300px; height: 400px;'>
 
 												<div class='block2-overlay trans-0-4'>
 													<a href='#' class='block2-btn-addwishlist hov-pointer trans-0-4'>
@@ -594,7 +610,7 @@
 											</div>
 										</div>
 									</div>
-								</div>
+								
 
 								";
 
@@ -604,12 +620,21 @@
 
 				<!-- Pagination -->
 					<div class="pagination flex-m flex-w p-t-26">
-						<a href="#" class="item-pagination flex-c-m trans-0-4 active-pagination">1</a>
-						<a href="#" class="item-pagination flex-c-m trans-0-4">2</a>
+						<?php 
+						for ($i=1; $i <= $numpaginas; $i++) { 
+							echo ' 
+						<a href="?pagination='.$i.'" class="item-pagination flex-c-m trans-0-4 active-pagination">'.$i.'</a>';
+						}
+
+
+					
+						//<a href="#" class="item-pagination flex-c-m trans-0-4">2</a>
+						
+						?>
 					</div>
-				</div>
-			</div>
-		</div>
+			
+			
+		
 	</section>
 
 
