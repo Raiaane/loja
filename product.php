@@ -1,7 +1,30 @@
+<?php 
+
+			session_start();
+
+			if (!isset($_SESSION['carrinho'])) {
+				$_SESSION['carrinho']= array();
+			}
+			if (isset($_GET['acao'])) {
+				$id = $_GET['id'];
+				if ($_GET['acao'] == "add") {
+				if (!isset($_SESSION['carrinho'][$_GET['id']])) {
+						$_SESSION['carrinho'][$id] = 1;	
+					}else{
+						$_SESSION['carrinho'][$id] += 1;
+					}
+					
+				}
+				
+			}
+
+
+ ?>
+
+
 <?php
 
 	include("admin/config.php");
-	session_start();
 
 ?>
 <!DOCTYPE html>
@@ -96,7 +119,7 @@
 							</li>
 
 							<li class="sale-noti">
-								<a href="product.html">Sale</a>
+								<a href="product.php">Sale</a>
 							</li>
 
 							<li>
@@ -128,63 +151,46 @@
 
 					<div class="header-wrapicon2">
 						<img src="images/icons/icon-header-02.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
-						<span class="header-icons-noti">0</span>
+						<span class="header-icons-noti">
+							<?php echo count($_SESSION['carrinho']);?>
+						</span>
 
 						<!-- Header cart noti -->
 						<div class="header-cart header-dropdown">
 							<ul class="header-cart-wrapitem">
+
+							<?php 
+							
+
+							$total = 0;
+							foreach ($_SESSION['carrinho'] as $id => $qnt) {
+								$sql = "SELECT * FROM produtos,imagem WHERE produtos.id = imagem.id_produto AND produtos.id = '".$id."'";
+								$query = mysqli_query($conexao, $sql);
+								$prods = mysqli_fetch_assoc($query);
+								
+							
+							 echo  '
 								<li class="header-cart-item">
 									<div class="header-cart-item-img">
-										<img src="images/item-cart-01.jpg" alt="IMG">
+										'.$prods['imagem'].'
 									</div>
 
 									<div class="header-cart-item-txt">
 										<a href="#" class="header-cart-item-name">
-											White Shirt With Pleat Detail Back
+											'.$prods['produto'].'
 										</a>
 
 										<span class="header-cart-item-info">
-											1 x $19.00
+											'.$qnt. 'x'.$prods['preco'].'
 										</span>
 									</div>
-								</li>
+								</li>';
 
-								<li class="header-cart-item">
-									<div class="header-cart-item-img">
-										<img src="images/item-cart-02.jpg" alt="IMG">
-									</div>
+								$total += $qnt * $prods['preco'];
 
-									<div class="header-cart-item-txt">
-										<a href="#" class="header-cart-item-name">
-											Converse All Star Hi Black Canvas
-										</a>
-
-										<span class="header-cart-item-info">
-											1 x $39.00
-										</span>
-									</div>
-								</li>
-
-								<li class="header-cart-item">
-									<div class="header-cart-item-img">
-										<img src="images/item-cart-03.jpg" alt="IMG">
-									</div>
-
-									<div class="header-cart-item-txt">
-										<a href="#" class="header-cart-item-name">
-											Nixon Porter Leather Watch In Tan
-										</a>
-
-										<span class="header-cart-item-info">
-											1 x $17.00
-										</span>
-									</div>
-								</li>
-							</ul>
-
-							<div class="header-cart-total">
-								Total: $75.00
-							</div>
+								}
+							
+								?>
 
 							<div class="header-cart-buttons">
 								<div class="header-cart-wrapbtn">
@@ -226,7 +232,10 @@
 
 					<div class="header-wrapicon2">
 						<img src="images/icons/icon-header-02.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
-						<span class="header-icons-noti">0</span>
+						<span class="header-icons-noti">
+							
+						<?php echo count($_SESSION['carrinho']); ?>
+						</span>
 
 						<!-- Header cart noti -->
 						<div class="header-cart header-dropdown">
@@ -551,7 +560,7 @@
 					<div class="row">
 
 						<?php
-
+ 							error_reporting(0);
 							$erroBranco = "DELETE FROM produtos WHERE produto = '';";
 							mysqli_query($conexao, $erroBranco);
 
@@ -592,9 +601,9 @@
 
 													<div class='block2-btn-addcart w-size1 trans-0-4'>
 														<!-- Button -->
-														<button class='flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4'>
-															Add to Cart
-														</button>
+														<a href='?acao=add&id=".$registrosProdutos['id']."' class='flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4'>
+															Add ao carrinho
+														</a>
 													</div>
 												</div>
 											</div>
@@ -622,11 +631,16 @@
 					<div class="pagination flex-m flex-w p-t-26">
 						<?php 
 						for ($i=1; $i <= $numpaginas; $i++) { 
-							echo ' 
+							if ($_GET['pagination'] == $i) {
+								echo ' 
 						<a href="?pagination='.$i.'" class="item-pagination flex-c-m trans-0-4 active-pagination">'.$i.'</a>';
+								# code...
+							} else{
+							echo ' 
+						<a href="?pagination='.$i.'" class="item-pagination flex-c-m trans-0-4">'.$i.'</a>';
 						}
 
-
+					}
 					
 						//<a href="#" class="item-pagination flex-c-m trans-0-4">2</a>
 						
