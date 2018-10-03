@@ -410,6 +410,7 @@ session_start();
 							$sql = "SELECT * FROM produtos,imagem WHERE produtos.id = imagem.id_produto AND produtos.id = '".$id."'";
 							$query = mysqli_query($conexao, $sql);
 							$prods = mysqli_fetch_assoc($query);
+						    $tot = $prods['preco'] * $qnt;
 							echo '
 								
 						<tr class="table-row">
@@ -433,7 +434,7 @@ session_start();
 									</button>
 								</div>
 							</td>
-							<td class="column-5">$36.00</td>
+							<td class="column-5">$'.$tot.'</td>
 						</tr>
 						';
 					}
