@@ -1,3 +1,30 @@
+<?php
+
+	include("config.php");
+ 	session_start();
+
+ 	if (!isset($_SESSION['user'])) {
+ 	
+ 		header("location:cadastro.php");
+ 	
+ 	}
+
+	$sqlUser = "SELECT * FROM cliente";
+	$queryUser = mysqli_query($conexao, $sqlUser);
+
+	$user = mysqli_fetch_assoc($queryUser);
+
+?>
+<?php 
+if (isset($_GET['sair'])) {
+	session_destroy();
+	unlink($_SESSION['user']);
+	unlink($_SESSION['nome']);
+header('location:cadastro.php');
+
+	
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -88,15 +115,15 @@
 							</li>
 
 							<li>
-								<a href="product.html">Shop</a>
+								<a href="product.php?page=todos">Shop</a>
 							</li>
 
 							<li class="sale-noti">
-								<a href="product.html">Sale</a>
+								<a href="product.php">Sale</a>
 							</li>
 
 							<li>
-								<a href="cart.html">Features</a>
+								<a href="cart.php">Features</a>
 							</li>
 
 							<li>
@@ -115,10 +142,14 @@
 				</div>
 
 				<!-- Header Icon -->
+				<a href="" style="margin-left: 50px;">Minha conta</a>
 				<div class="header-icons">
+					<p style="position: absolute;margin-left: -40px"><?php echo "".$_SESSION['user']; ?></p>
 					<a href="#" class="header-wrapicon1 dis-block">
 						<img src="images/icons/icon-header-01.png" class="header-icon1" alt="ICON">
 					</a>
+
+					<a href="?sair">Sair</a>
 
 					<span class="linedivide1"></span>
 
