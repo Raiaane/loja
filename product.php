@@ -1,23 +1,22 @@
 <?php 
 
-			session_start();
+session_start();
 
-			if (!isset($_SESSION['carrinho'])) {
-				$_SESSION['carrinho']= array();
-			}
-			if (isset($_GET['acao'])) {
-				$id = $_GET['id'];
-				if ($_GET['acao'] == "add") {
-				if (!isset($_SESSION['carrinho'][$_GET['id']])) {
-						$_SESSION['carrinho'][$id] = 1;	
-					}else{
-						$_SESSION['carrinho'][$id] += 1;
-					}
+if (!isset($_SESSION['carrinho'])) {
+$_SESSION['carrinho']= array();
+	}
+if (isset($_GET['acao'])) {
+$id = $_GET['id'];
+if ($_GET['acao'] == "add") {
+if (!isset($_SESSION['carrinho'][$_GET['id']])) {
+$_SESSION['carrinho'][$id] = 1;	
+}else{
+$_SESSION['carrinho'][$id] += 1;
+}
 					
-				}
+	}
 				
-			}
-
+		}
 
  ?>
 
@@ -160,31 +159,28 @@
 							<ul class="header-cart-wrapitem">
 
 							<?php 
-							
-
 							$total = 0;
 							foreach ($_SESSION['carrinho'] as $id => $qnt) {
-								$sql = "SELECT * FROM produtos,imagem WHERE produtos.id = imagem.id_produto AND produtos.id = '".$id."'";
+							$sql = "SELECT * FROM produtos,imagem WHERE produtos.id = imagem.id_produto AND produtos.id = '".$id."'";
 								$query = mysqli_query($conexao, $sql);
 								$prods = mysqli_fetch_assoc($query);
 								
-							
 							 echo  '
 								<li class="header-cart-item">
-									<div class="header-cart-item-img">
-									<img src ="admin/img/'.$prods['imagem'].'" alt="IMG">
+								<div class="header-cart-item-img">
+								<img src ="admin/img/'.$prods['imagem'].'" alt="IMG">
 										
-									</div>
+							    </div>
 
-									<div class="header-cart-item-txt">
-										<a href="#" class="header-cart-item-name">
-											'.$prods['produto'].'
-										</a>
+								<div class="header-cart-item-txt">
+								<a href="#" class="header-cart-item-name">
+								'.$prods['produto'].'
+									</a>
 
-										<span class="header-cart-item-info">
-											'.$qnt. 'x'.$prods['preco'].'
-										</span>
-									</div>
+								<span class="header-cart-item-info">
+								'.$qnt. 'x'.$prods['preco'].'
+								</span>
+							    </div>
 								</li>';
 
 								$total += $qnt * $prods['preco'];
@@ -196,16 +192,14 @@
 							<div class="header-cart-buttons">
 								<div class="header-cart-wrapbtn">
 									<!-- Button -->
-									<a href="cart.html" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
-										View Cart
+									<a href="cart.php" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+										VER NO CARRINHO
 									</a>
 								</div>
 
 								<div class="header-cart-wrapbtn">
 									<!-- Button -->
-									<a href="#" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
-										Check Out
-									</a>
+									
 								</div>
 							</div>
 						</div>
@@ -357,7 +351,7 @@
 					</li>
 
 					<li class="item-menu-mobile">
-						<a href="index.html">Home</a>
+						<a href="index.php">Home</a>
 						<ul class="sub-menu">
 							<li><a href="index.html">Homepage V1</a></li>
 							<li><a href="home-02.html">Homepage V2</a></li>
@@ -367,15 +361,15 @@
 					</li>
 
 					<li class="item-menu-mobile">
-						<a href="product.html">Shop</a>
+						<a href="product.php">Shop</a>
 					</li>
 
 					<li class="item-menu-mobile">
-						<a href="product.html">Sale</a>
+						<a href="product.php">Sale</a>
 					</li>
 
 					<li class="item-menu-mobile">
-						<a href="cart.html">Features</a>
+						<a href="cart.php">Features</a>
 					</li>
 
 					<li class="item-menu-mobile">
@@ -387,7 +381,7 @@
 					</li>
 
 					<li class="item-menu-mobile">
-						<a href="contact.html">Contact</a>
+						<a href="contact.php">Contact</a>
 					</li>
 				</ul>
 			</nav>
@@ -403,10 +397,7 @@
 			New Arrivals Women Collection 2018
 		</p>
 	</section>
-
-
 	<!-- Content page -->
-
 	<section class="bgwhite p-t-55 p-b-65">
 		<div class="container">
 			<div class="row">
@@ -416,30 +407,34 @@
 						<h4 class="m-text14 p-b-7">
 							CATEGORIAS
 						</h4>
-
-				
-
-			<?php  
-
-
-			$sqlBuscaCat = "SELECT * FROM categoria";
-			$queryBuscaCat = mysqli_query($conexao, $sqlBuscaCat);
-			 	while ($dado = mysqli_fetch_assoc($queryBuscaCat)) {
-			            
-	       			echo '
-	       					<li class="p-t-4">
-								<a href="#" class="s-text13 active1">
-									'.$dado['categoria'].'
-								</a>
+						<ul class="p-b-54">
+							
+							<li class='p-b-9'>
+							
+								<a href='?cat=todos' class='s-text7'>TODOS</a>
+							
 							</li>
+							<?php  
 
+								$sqlBuscaCat = "SELECT * FROM categoria";
+								$queryBuscaCat = mysqli_query($conexao, $sqlBuscaCat);
+							 	while ($dado = mysqli_fetch_assoc($queryBuscaCat)) {
+							            
+						       		echo "
+						       		
+							       		<li class='p-t-4'>
 
-	       			';
-						
-	            }
+											<a href='?cat=".$dado['categoria']."' class='s-text7 active1'>
+											".$dado['categoria']."
+											</a>
+										
+										</li>
 
-                    ?>				
+						       		";
+										
+					            }
 
+				            ?>				
 						</ul>
 
 						<!--  -->
@@ -521,8 +516,6 @@
 					</div>
 				</div>
 
-
-
 				<div class="col-sm-6 col-md-8 col-lg-9 p-b-50">
 					<!--  -->
 					<div class="flex-sb-m flex-w p-b-35">
@@ -537,35 +530,31 @@
 							</div>
 
 							<div class="rs2-select2 bo4 of-hidden w-size12 m-t-5 m-b-5 m-r-10">
-								<select class="selection-2" name="sorting">
+								<select class="selection-2" name="preco">
 									
 									<option>Preço</option>
 									<option>$0.00 - $50.00</option>
 									<option>$50.00 - $100.00</option>
 									<option>$100.00 - $150.00</option>
 									<option>$150.00 - $200.00</option>
-									<option>$200.00+</option>
-
+									<option>$200.00+ </option>
 								</select>
 								</form> 
 							</div>
 						</div>
-						
-
 						<span class="s-text8 p-t-5 p-b-5">
 							Showing 1–12 of 16 results
 						</span>
 					</div>
-
 					<!-- Product -->
 					<div class="row">
 
 						<?php
+
  							error_reporting(0);
 							$erroBranco = "DELETE FROM produtos WHERE produto = '';";
 							mysqli_query($conexao, $erroBranco);
-
-							//acão para ir para outra pagina
+									//acão para ir para outra pagina
 							$pagina = isset($_GET['pagination'])?$_GET['pagination']:1;
 							$registro = 6;
 							$SQLT= "SELECT * FROM produtos";
@@ -575,70 +564,91 @@
 							$inicio = $pagina - 1;
 							$inicio = ($inicio*$numpaginas);
 
+							//filtro
+							$sqlSelectP = "";
 
-							//seleção e mostra dos produtos para pagina
-
-							$sqlSelectP = "SELECT * FROM p_loja.produtos LIMIT $inicio, $registro";
-							$querySelectP = mysqli_query($conexao, $sqlSelectP);
-
-							while ($registrosProdutos = mysqli_fetch_assoc($querySelectP)){
+							if (isset($_GET['cat'])) {
 								
-								$sqlImg = "SELECT * FROM imagem WHERE id_produto = '".$registrosProdutos['id']."' LIMIT 0,1";
-								$queryImg = mysqli_query($conexao, $sqlImg);
-								$img = mysqli_fetch_assoc($queryImg);
-								echo "
-
-									<div class='col-sm-12 col-md-6 col-lg-4 p-b-50'>
-										<!-- Block2 -->
-										<div class='block2' >
-											<div class='block2-img wrap-pic-w of-hidden pos-relative' style = 'width: 300px; height: 400px; padding: 10px; margin-bottom:45px;'>
-												<img src='admin/img/".$img['imagem']."' alt='IMG-PRODUCT'style = 'width: 300px; height: 400px;'>
-
-												<div class='block2-overlay trans-0-4'>
-													<a href='#' class='block2-btn-addwishlist hov-pointer trans-0-4'>
-														<i class='icon-wishlist icon_heart_alt' aria-hidden='true'></i>
-														<i class='icon-wishlist icon_heart dis-none aria-hidden='true'></i>
-													</a>
-
-													<div class='block2-btn-addcart w-size1 trans-0-4'>
-														<!-- Button -->
-														<a href='?acao=add&id=".$registrosProdutos['id']."' class='flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4'>
-															Add ao carrinho
-														</a>
-													</div>
-												</div>
-											</div>
-
-											<div class='block2-txt p-t-20'>
-												<a href='product-detail.php?detalhes=".$registrosProdutos['id']."' class='block2-name dis-block s-text3 p-b-5'>
-													".$registrosProdutos['produto']."
-												</a>
-
-												<span class='block2-price m-text6 p-r-5'>
-													".$registrosProdutos['preco']."$
-												</span>
-											</div>
-										</div>
-									</div>
+								$categoria = (string) $_GET['cat'];
 								
+								if ($categoria == "todos") {
+									
+									$sqlSelectP = "SELECT * FROM p_loja.produtos LIMIT $inicio, $registro";
 
-								";
+								} else if ($categoria != "todos") {
+
+									$sqlSelectP = "SELECT * FROM p_loja.produtos WHERE cat = '".$categoria."' LIMIT $inicio, $registro";
+
+								}
+
+							} else {
+
+								$sqlSelectP = "SELECT * FROM p_loja.produtos LIMIT $inicio, $registro";
 
 							}
+
+							//seleção e mostra dos produtos para pagina
+							
+							$querySelectP = mysqli_query($conexao, $sqlSelectP);
+							   
+							while ($registrosProdutos = mysqli_fetch_assoc($querySelectP)){
+								
+							$sqlImg = "SELECT * FROM imagem WHERE id_produto = '".$registrosProdutos['id']."' LIMIT 0,1";
+							$queryImg = mysqli_query($conexao, $sqlImg);
+							$img = mysqli_fetch_assoc($queryImg);
+
+							echo "
+
+							<div class='col-sm-12 col-md-6 col-lg-4 p-b-50'>
+								<!-- Block2 -->
+							<div class='block2' >
+							<div class='block2-img wrap-pic-w of-hidden pos-relative' style = 'width: 300px; height: 400px; padding: 10px; margin-bottom:45px;'>
+							<img src='admin/img/".$img['imagem']."' alt='IMG-PRODUCT'style = 'width: 300px; height: 400px;'>
+
+
+							<div class='block2-overlay trans-0-4'>
+							<a href='#' class='block2-btn-addwishlist hov-pointer trans-0-4'>
+							<i class='icon-wishlist icon_heart_alt' aria-hidden='true'></i>
+							<i class='icon-wishlist icon_heart dis-none aria-hidden='true'></i>
+							</a>
+
+							<div class='block2-btn-addcart w-size1 trans-0-4'>
+							<!-- Button -->
+							<a href='?acao=add&id=".$registrosProdutos['id']."' class='flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4'>
+								Add ao carrinho
+								</a>
+							 </div>
+						     </div>
+						     </div>
+
+						<div class='block2-txt p-t-20'>
+						<a href='product-detail.php?detalhes=".$registrosProdutos['id']."' class='block2-name dis-block s-text3 p-b-5'>
+								".$registrosProdutos['produto']."
+								</a>
+
+							<span class='block2-price m-text6 p-r-5'>
+							".$registrosProdutos['preco']."$
+							</span>
+							</div>
+							</div>
+						    </div>
+								";
+								}
+							
 
 						?>
 
 				<!-- Pagination -->
 					<div class="pagination flex-m flex-w p-t-26">
 						<?php 
-						for ($i=1; $i <= $numpaginas; $i++) { 
-							if ($_GET['pagination'] == $i) {
-								echo ' 
-						<a href="?pagination='.$i.'" class="item-pagination flex-c-m trans-0-4 active-pagination">'.$i.'</a>';
-								# code...
-							} else{
-							echo ' 
-						<a href="?pagination='.$i.'" class="item-pagination flex-c-m trans-0-4">'.$i.'</a>';
+				for ($i=1; $i <= $numpaginas; $i++) { 
+				if ($_GET['pagination'] == $i) {
+					echo ' 
+				<a href="?pagination='.$i.'" class="item-pagination flex-c-m trans-0-4 active-pagination">'.$i.'</a>';
+							
+					} else{
+					echo ' 
+				<a href="?pagination='.$i.'" class="item-pagination flex-c-m trans-0-4">'.$i.'</a>';
 						}
 
 					}
@@ -684,7 +694,7 @@
 				<ul>
 					<li class="p-b-9">
 						<a href="#" class="s-text7">
-							Men
+							Me
 						</a>
 					</li>
 
