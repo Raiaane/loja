@@ -142,16 +142,33 @@ header('location:cadastro.php');
 				</div>
 
 				<!-- Header Icon -->
-				<a href="" style="margin-left: 50px;">Minha conta</a>
+				<!--<a href="conta.php" style="margin-left: 50px;">Minha conta</a>-->
 				<div class="header-icons">
-					<p style="position: absolute;margin-left: -40px"><?php echo "".$_SESSION['user']; ?></p>
-					<a href="#" class="header-wrapicon1 dis-block">
-						<img src="images/icons/icon-header-01.png" class="header-icon1" alt="ICON">
-					</a>
+					<li class="dropdow">
+						<form method="get">
+							<?php 
 
-					<a href="?sair">Sair</a>
-
-					<span class="linedivide1"></span>
+							if (isset($_SESSION['user'])) {
+								echo '
+								
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+		<img style="width: 30px; height: 30px; border-radius: 50%; margin-right: 30px;" src="images/icons/icon-header-01.png" class="header-icon1" alt="ICON">
+		<label style="margin-left: 10px; ">'.$_SESSION ['user'].'</label>
+			</a>
+            <ul class="dropdown-menu" style="width: 250px; margin:5px;">
+                <ul class="menu"><li class="user-header">
+                  <a href="configuracao.php? class="btn btn-default ">Configuração</a><br>
+                  <a href="?sair" class="btn btn-default">Sair</a>
+             
+              </ul>
+            </ul>
+            </div>';
+				}else{
+					echo '
+		<img style="width: 30px; height: 30px; border-radius: 50%;" src="images/icons/icon-header-01.png" class="header-icon1" alt="ICON">
+                  <a href="cadastro.php" class="btn btn-default ">Cadastrar/Entrar</a>';
+				}
+				?>
 
 					<div class="header-wrapicon2">
 						<img src="images/icons/icon-header-02.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
@@ -237,7 +254,7 @@ header('location:cadastro.php');
 		<!-- Header Mobile -->
 		<div class="wrap_header_mobile">
 			<!-- Logo moblie -->
-			<a href="index.html" class="logo-mobile">
+			<a href="index.php" class="logo-mobile">
 				<img src="images/icons/logo.png" alt="IMG-LOGO">
 			</a>
 
@@ -384,15 +401,15 @@ header('location:cadastro.php');
 					</li>
 
 					<li class="item-menu-mobile">
-						<a href="product.html">Shop</a>
+						<a href="product.php">Shop</a>
 					</li>
 
 					<li class="item-menu-mobile">
-						<a href="product.html">Sale</a>
+						<a href="product.php">Sale</a>
 					</li>
 
 					<li class="item-menu-mobile">
-						<a href="cart.html">Features</a>
+						<a href="cart.php">Features</a>
 					</li>
 
 					<li class="item-menu-mobile">
@@ -404,7 +421,7 @@ header('location:cadastro.php');
 					</li>
 
 					<li class="item-menu-mobile">
-						<a href="contact.html">Contact</a>
+						<a href="contact.php">Contact</a>
 					</li>
 				</ul>
 			</nav>
