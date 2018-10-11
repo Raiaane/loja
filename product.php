@@ -389,7 +389,7 @@ $_SESSION['carrinho'][$id] += 1;
 	</header>
 
 	<!-- Title Page -->
-	<section class="bg-title-page p-t-50 p-b-40 flex-col-c-m" style="background-image: url(admin/img/img.jpg);">
+	<section class="bg-title-page p-t-50 p-b-40 flex-col-c-m" style="background-image: url(admin/img/y.jpg);">
 		<h2 class="l-text2 t-center">
 			Women
 		</h2>
@@ -510,8 +510,8 @@ $_SESSION['carrinho'][$id] += 1;
 
 						<div class="search-product pos-relative bo4 of-hidden">
 							<form method="get">
-							<input class="s-text7 size6 p-l-23 p-r-50" type="text" name="search" placeholder="Search Products...">
-							
+								<input class="s-text7 size6 p-l-23 p-r-50" type="text" name="search" placeholder="Search Products...">
+							</form>
 						</div>
 					</div>
 				</div>
@@ -520,27 +520,24 @@ $_SESSION['carrinho'][$id] += 1;
 					<!--  -->
 					<div class="flex-sb-m flex-w p-b-35">
 						<div class="flex-w">
-							<div class="rs2-select2 bo4 of-hidden w-size12 m-t-5 m-b-5 m-r-10">
-								<select class="selection-2" name="sorting">
-									<option>Filtrar</option>
-									<option>Popularity</option>
-									<option>Price: low to high</option>
-									<option>Price: high to low</option>
-								</select>
-							</div>
+							
 
-							<div class="rs2-select2 bo4 of-hidden w-size12 m-t-5 m-b-5 m-r-10">
-								<select class="selection-2" name="preco">
-									
-									<option>Preço</option>
-									<option>$0.00 - $50.00</option>
-									<option>$50.00 - $100.00</option>
-									<option>$100.00 - $150.00</option>
-									<option>$150.00 - $200.00</option>
-									<option>$200.00+ </option>
-								</select>
-								</form> 
-							</div>
+							<ul class="nav nav-tabs">
+							  	<li class="nav-item dropdown">
+							    	<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Preco</a>
+							    <div class="dropdown-menu">
+							      
+							      	<a class="dropdown-item" href="?preco=0">Todos</a>
+							        <a class="dropdown-item" href="?preco=1">$0.00 - $50.00</a>
+							        <a class="dropdown-item" href="?preco=2">$50.00 - $100.00</a>
+							        <a class="dropdown-item" href="?preco=3">$100.00 - $150.00</a>
+							        <a class="dropdown-item" href="?preco=4">$150.00 - $200.00</a>
+							        <a class="dropdown-item" href="?preco=5">$200.00 +</a>
+							    
+							    </div>  
+							  	</li>
+							</ul>
+
 						</div>
 						<span class="s-text8 p-t-5 p-b-5">
 							Showing 1–12 of 16 results
@@ -550,11 +547,10 @@ $_SESSION['carrinho'][$id] += 1;
 					<div class="row">
 
 						<?php
-
  							error_reporting(0);
 							$erroBranco = "DELETE FROM produtos WHERE produto = '';";
 							mysqli_query($conexao, $erroBranco);
-									//acão para ir para outra pagina
+							//acão para ir para outra pagina
 							$pagina = isset($_GET['pagination'])?$_GET['pagination']:1;
 							$registro = 6;
 							$SQLT= "SELECT * FROM produtos";
@@ -564,10 +560,10 @@ $_SESSION['carrinho'][$id] += 1;
 							$inicio = $pagina - 1;
 							$inicio = ($inicio*$numpaginas);
 
-							//filtro
-							$sqlSelectP = "";
+								//filtro
+								$sqlSelectP = "";
 
-							if (isset($_GET['cat'])) {
+								if (isset($_GET['cat'])) {
 								
 								$categoria = (string) $_GET['cat'];
 								
@@ -581,13 +577,42 @@ $_SESSION['carrinho'][$id] += 1;
 
 								}
 
+							} else if (isset($_GET['preco'])) {
+
+								$preco = (int) $_GET['preco'];
+								if ($preco == 1) {
+									
+									$sqlSelectP = "SELECT * FROM p_loja.produtos WHERE preco > 0 AND preco < 50 LIMIT $inicio, $registro";
+								}
+								if ($preco == 2) {
+									
+									$sqlSelectP = "SELECT * FROM p_loja.produtos WHERE preco > 50 AND preco < 100 LIMIT $inicio, $registro";
+								}
+								if ($preco == 3) {
+									
+									$sqlSelectP = "SELECT * FROM p_loja.produtos WHERE preco > 100 AND preco < 150 LIMIT $inicio, $registro";
+								}
+								if ($preco == 4) {
+									
+									$sqlSelectP = "SELECT * FROM p_loja.produtos WHERE preco > 150 AND preco < 200 LIMIT $inicio, $registro";
+								}
+								if ($preco == 5) {
+									
+									$sqlSelectP = "SELECT * FROM p_loja.produtos WHERE preco > 200 LIMIT $inicio, $registro";
+								
+								} else if ($preco == 0) {
+									
+									$sqlSelectP = "SELECT * FROM p_loja.produtos LIMIT $inicio, $registro";
+
+								}
+
 							} else {
 
 								$sqlSelectP = "SELECT * FROM p_loja.produtos LIMIT $inicio, $registro";
 
 							}
 
-							//seleção e mostra dos produtos para pagina
+								//seleção e mostra dos produtos para pagina
 							
 							$querySelectP = mysqli_query($conexao, $sqlSelectP);
 							   
@@ -635,17 +660,15 @@ $_SESSION['carrinho'][$id] += 1;
 								";
 								}
 							
-
 						?>
 
 				<!-- Pagination -->
 					<div class="pagination flex-m flex-w p-t-26">
 						<?php 
-				for ($i=1; $i <= $numpaginas; $i++) { 
-				if ($_GET['pagination'] == $i) {
+					for ($i=1; $i <= $numpaginas; $i++) { 
+					if ($_GET['pagination'] == $i) {
 					echo ' 
-				<a href="?pagination='.$i.'" class="item-pagination flex-c-m trans-0-4 active-pagination">'.$i.'</a>';
-							
+				<a href="?pagination='.$i.'" class="item-pagination flex-c-m trans-0-4 active-pagination">'.$i.'</a>';		
 					} else{
 					echo ' 
 				<a href="?pagination='.$i.'" class="item-pagination flex-c-m trans-0-4">'.$i.'</a>';
@@ -654,13 +677,9 @@ $_SESSION['carrinho'][$id] += 1;
 					}
 					
 						//<a href="#" class="item-pagination flex-c-m trans-0-4">2</a>
-						
 						?>
 					</div>
-			
-			
-		
-	</section>
+					</section>
 
 
 	<!-- Footer -->
